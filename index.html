@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="مفسر الأحلام بالذكاء الاصطناعي - تفسير دقيق للأحلام بناءً على ابن سيرين والنابلسي. اكتشف معاني أحلامك مجانًا. Islamic Dream Interpretation based on Ibn Sirin.">
+    <meta name="keywords"
+        content="تفسير الأحلام, ابن سيرين, النابلسي, تفسير الرؤى, أحلام, ذكاء اصطناعي, Dream Interpretation, Ibn Sirin, Islam, AI">
+    <title>تفسير الأحلام - ابن سيرين AI</title>
+    <link rel="stylesheet" href="styles.css?v=5">
+</head>
+
+<body>
+    <div class="container fade-in">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4rem;">
+            <div>
+                <div class="badge" id="badgeText">AI Powered</div>
+                <h1 id="appTitle">Dream Interpreter</h1>
+                <p id="appDescription" style="max-width: 60ch; opacity: 0.8; margin-top: 1rem;">
+                    Unlock the hidden meanings behind your dreams using the power of Gemini AI.
+                </p>
+            </div>
+            <button id="langToggle" style="padding: 0.5rem 1rem; font-size: 0.875rem;">العربية</button>
+        </div>
+
+        <div class="grid-2">
+            <!-- Input Section -->
+            <div>
+                <div class="card">
+                    <h3 id="inputTitle">Your Dream</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <label for="dreamInput" id="inputLabel">Describe your dream</label>
+                        <textarea id="dreamInput" rows="6"
+                            placeholder="I was flying over a city made of crystal..."></textarea>
+                    </div>
+                    <button id="interpretBtn" style="width: 100%;">Interpret Dream</button>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div>
+                <div class="card" id="resultCard" style="display: none;">
+                    <h3 id="resultTitle">Interpretation</h3>
+                    <div id="resultContent" style="opacity: 0.9; line-height: 1.6;"></div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" style="display: none; text-align: center; padding: 2rem;">
+                    <div class="spinner" style="margin: 0 auto 1rem;"></div>
+                    <p id="loadingText">Consulting the oracle...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="icon-box" style="margin: 0 auto 1rem; border: none;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                    <p id="emptyText">Enter your dream to reveal its meaning.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Content Section -->
+        <section id="seo-content"
+            style="margin-top: 6rem; border-top: 1px solid var(--color-border); padding-top: 3rem; opacity: 0.8;">
+            <div dir="rtl" lang="ar">
+                <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">تفسير الأحلام وفقاً لابن سيرين والنابلسي</h2>
+                <p style="margin-bottom: 1.5rem;">
+                    يُعتبر علم تفسير الأحلام (تعبير الرؤى) من العلوم المهمة في التراث الإسلامي. يقدم هذا التطبيق خدمة
+                    تفسير الأحلام المدعومة بالذكاء الاصطناعي، والتي تستند إلى قواعد وأصول التفسير التي وضعها كبار
+                    المعبرين مثل **محمد بن سيرين** والشيخ **عبد الغني النابلسي**.
+                </p>
+
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">لماذا نستخدم تفسير ابن سيرين؟</h3>
+                <p style="margin-bottom: 1.5rem;">
+                    كتاب "تفسير الأحلام الكبير" المنسوب لابن سيرين يُعد المرجع الأساسي في هذا المجال. يعتمد منهجه على
+                    استنباط المعاني من القرآن الكريم والسنة النبوية، ودلالات الأسماء والرموز اللغوية.
+                </p>
+
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">رموز شائعة في الأحلام</h3>
+                <div class="grid-2" style="font-size: 0.9rem;">
+                    <ul style="list-style-position: inside;">
+                        <li><strong>الماء:</strong> حياة وعلم ورزق.</li>
+                        <li><strong>الطيران:</strong> سفر أو تغيير حال.</li>
+                        <li><strong>السقوط:</strong> تغير في المكانة.</li>
+                        <li><strong>الموت:</strong> قد يدل على طول العمر أو التوبة.</li>
+                    </ul>
+                    <ul style="list-style-position: inside;">
+                        <li><strong>الأفعى:</strong> عدو ماكر.</li>
+                        <li><strong>السمك:</strong> رزق ومال.</li>
+                        <li><strong>النار:</strong> فتنة أو سلطان.</li>
+                        <li><strong>البكاء:</strong> فرج وسرور إن لم يكن بصراخ.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script type="module" src="app.js?v=2"></script>
+</body>
+
+</html>
