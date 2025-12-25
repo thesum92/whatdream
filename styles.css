@@ -264,24 +264,59 @@ label {
 }
 
 /* Data Display */
-.table {
+/* Data Display */
+table {
     width: 100%;
     border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.95rem;
 }
 
-.table th,
-.table td {
-    padding: 1rem;
-    text-align: left;
+table th,
+table td {
+    padding: 0.75rem 1rem;
+    text-align: right;
+    /* Default for Arabic context */
     border-bottom: 1px solid var(--color-border);
 }
 
-.table th {
+table th {
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     letter-spacing: 0.05em;
+    background-color: var(--color-hover);
 }
+
+/* Markdown Content Styles */
+#resultContent ul,
+#resultContent ol {
+    margin: 1rem 0;
+    padding-right: 2rem;
+    /* Arabic RTL */
+}
+
+#resultContent li {
+    margin-bottom: 0.5rem;
+}
+
+#resultContent strong {
+    font-weight: 700;
+}
+
+/* RTL/LTR Adjustments based on document direction */
+html[dir="ltr"] table th,
+html[dir="ltr"] table td {
+    text-align: left;
+}
+
+html[dir="ltr"] #resultContent ul,
+html[dir="ltr"] #resultContent ol {
+    padding-left: 2rem;
+    padding-right: 0;
+}
+
+
 
 .avatar {
     width: 40px;

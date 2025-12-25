@@ -1,0 +1,8 @@
+{
+  "name": "dream-interpreter",
+  "version": "1.0.0",
+  "description": "AI Powered Dream Interpreter",
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3"
+  }
+}

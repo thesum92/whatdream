@@ -1,23 +1,23 @@
-import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+import { marked } from "https://esm.run/marked";
+
+// Localization
+const langToggle = document.getElementById('langToggle');
+let currentLang = 'ar';
 
 const interpretBtn = document.getElementById('interpretBtn');
 const dreamInput = document.getElementById('dreamInput');
-// const apiKeyInput = document.getElementById('apiKey'); // Removed
 const resultCard = document.getElementById('resultCard');
 const resultContent = document.getElementById('resultContent');
 const loadingState = document.getElementById('loadingState');
 const emptyState = document.getElementById('emptyState');
 const toastContainer = document.getElementById('toastContainer');
 
-// Localization
-const langToggle = document.getElementById('langToggle');
-let currentLang = 'ar';
 
 const translations = {
     en: {
-        badgeText: "AI Powered",
-        appTitle: "Dream Interpreter",
-        appDescription: "Unlock the hidden meanings behind your dreams using the power of Advanced AI.",
+        badgeText: "Instant AI Interpretation",
+        appTitle: "Dream Interpretation - Ibn Sirin & Nabulsi",
+        appDescription: "Interpret your dream now for free and accurately. We combine the authenticity of Ibn Sirin & Nabulsi with Advanced AI to reveal your vision's secrets.",
         langToggle: "العربية",
         inputTitle: "Your Dream",
         inputLabel: "Describe your dream",
@@ -103,14 +103,11 @@ function showToast(message, type = 'success') {
 
 interpretBtn.addEventListener('click', async () => {
     const dream = dreamInput.value.trim();
-    // Hardcoded API Key as requested
-    const apiKey = "AIzaSyBMmw_RjaaB-M1FrXy6RKtymkg0Q5AuMQc";
 
     if (!dream) {
         showToast(translations[currentLang].toastEmpty, 'error');
         return;
     }
-
     // UI State: Loading
     interpretBtn.disabled = true;
     emptyState.style.display = 'none';
@@ -118,37 +115,31 @@ interpretBtn.addEventListener('click', async () => {
     loadingState.style.display = 'block';
 
     try {
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const response = await fetch('/api/interpret', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dream: dream,
+                language: currentLang
+            })
+        });
 
-        let prompt = `You are a mystical and insightful dream interpreter. Interpret the following dream: "${dream}". Provide a concise but deep analysis of the symbolism and potential meaning. Keep the tone mysterious but helpful.`;
+        const data = await response.json();
 
-        if (currentLang === 'ar') {
-            prompt = `أنت مفسر أحلام خبير في التراث الإسلامي وتفسير الأحلام لابن سيرين والنابلسي.
-            قم بتفسير الحلم التالي: "${dream}".
-            
-            قواعد التفسير:
-            1. ابحث عن الرموز في الحلم وفسرها بناءً على كتب ابن سيرين والنابلسي.
-            2. قدم التفسير بشكل موجز ومفيد.
-            3. استشهد بدلالات الرموز كما وردت في التراث الإسلامي إن أمكن.
-            4. حافظ على نبرة مطمئنة وحكيمة.
-            5. ابدأ بعبارة "والله أعلم" في النهاية.
-            
-            رد باللغة العربية.`;
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to interpret');
         }
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        const text = data.result;
 
         // UI State: Success
         loadingState.style.display = 'none';
         resultCard.style.display = 'block';
 
-        // Simple markdown parsing (bolding)
-        const formattedText = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n/g, '<br>');
+        // Markdown parsing with marked
+        const formattedText = marked.parse(text);
 
         resultContent.innerHTML = formattedText;
         showToast(translations[currentLang].toastSuccess);
