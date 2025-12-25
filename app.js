@@ -11,13 +11,13 @@ const toastContainer = document.getElementById('toastContainer');
 
 // Localization
 const langToggle = document.getElementById('langToggle');
-let currentLang = 'en';
+let currentLang = 'ar';
 
 const translations = {
     en: {
         badgeText: "AI Powered",
         appTitle: "Dream Interpreter",
-        appDescription: "Unlock the hidden meanings behind your dreams using the power of Gemini AI.",
+        appDescription: "Unlock the hidden meanings behind your dreams using the power of Advanced AI.",
         langToggle: "العربية",
         inputTitle: "Your Dream",
         inputLabel: "Describe your dream",
@@ -27,13 +27,13 @@ const translations = {
         loadingText: "Consulting the oracle...",
         emptyText: "Enter your dream to reveal its meaning.",
         toastSuccess: "Dream interpreted successfully",
-        toastError: "Failed to interpret dream. Check your API key.",
+        toastError: "Failed to interpret dream.",
         toastEmpty: "Please describe your dream"
     },
     ar: {
-        badgeText: "مدعوم بالذكاء الاصطناعي",
-        appTitle: "مفسر الأحلام",
-        appDescription: "اكتشف المعاني الخفية وراء أحلامك باستخدام قوة Gemini AI.",
+        badgeText: "تفسير فوري بالذكاء الاصطناعي",
+        appTitle: "تفسير الأحلام - ابن سيرين والنابلسي",
+        appDescription: "فسّر حلمك الآن مجاناً وبدقة. نجمع بين أصالة تفسير ابن سيرين والنابلسي وتقنيات الذكاء الاصطناعي لكشف خفايا رؤياك.",
         langToggle: "English",
         inputTitle: "حلمك",
         inputLabel: "صف حلمك",

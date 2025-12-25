@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
@@ -16,40 +16,41 @@
     <div class="container fade-in">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4rem;">
             <div>
-                <div class="badge" id="badgeText">AI Powered</div>
-                <h1 id="appTitle">Dream Interpreter</h1>
+                <div class="badge" id="badgeText">تفسير فوري بالذكاء الاصطناعي</div>
+                <h1 id="appTitle">تفسير الأحلام - ابن سيرين والنابلسي</h1>
                 <p id="appDescription" style="max-width: 60ch; opacity: 0.8; margin-top: 1rem;">
-                    Unlock the hidden meanings behind your dreams using the power of Gemini AI.
+                    فسّر حلمك الآن مجاناً وبدقة. نجمع بين أصالة تفسير ابن سيرين والنابلسي والذكاء الاصطناعي لكشف خفايا
+                    رؤياك.
                 </p>
             </div>
-            <button id="langToggle" style="padding: 0.5rem 1rem; font-size: 0.875rem;">العربية</button>
+            <button id="langToggle" style="padding: 0.5rem 1rem; font-size: 0.875rem;">English</button>
         </div>
 
         <div class="grid-2">
             <!-- Input Section -->
             <div>
                 <div class="card">
-                    <h3 id="inputTitle">Your Dream</h3>
+                    <h3 id="inputTitle">حلمك</h3>
                     <div style="margin-bottom: 1rem;">
-                        <label for="dreamInput" id="inputLabel">Describe your dream</label>
+                        <label for="dreamInput" id="inputLabel">صف حلمك</label>
                         <textarea id="dreamInput" rows="6"
-                            placeholder="I was flying over a city made of crystal..."></textarea>
+                            placeholder="كنت أطير فوق مدينة مصنوعة من الكريستال..."></textarea>
                     </div>
-                    <button id="interpretBtn" style="width: 100%;">Interpret Dream</button>
+                    <button id="interpretBtn" style="width: 100%;">فسر الحلم</button>
                 </div>
             </div>
 
             <!-- Result Section -->
             <div>
                 <div class="card" id="resultCard" style="display: none;">
-                    <h3 id="resultTitle">Interpretation</h3>
+                    <h3 id="resultTitle">التفسير</h3>
                     <div id="resultContent" style="opacity: 0.9; line-height: 1.6;"></div>
                 </div>
 
                 <!-- Loading State -->
                 <div id="loadingState" style="display: none; text-align: center; padding: 2rem;">
                     <div class="spinner" style="margin: 0 auto 1rem;"></div>
-                    <p id="loadingText">Consulting the oracle...</p>
+                    <p id="loadingText">جاري استشارة العراف...</p>
                 </div>
 
                 <!-- Empty State -->
@@ -60,7 +61,7 @@
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
                     </div>
-                    <p id="emptyText">Enter your dream to reveal its meaning.</p>
+                    <p id="emptyText">أدخل حلمك للكشف عن معناه.</p>
                 </div>
             </div>
         </div>
@@ -104,7 +105,7 @@
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <script type="module" src="app.js?v=2"></script>
+    <script type="module" src="app.js?v=4"></script>
 </body>
 
 </html>
