@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AI Powered Dream Interpreter",
   "dependencies": {
-    "@google/generative-ai": "^0.1.3"
-  }
+    "@google/generative-ai": "^0.1.3",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1"
+  },
+  "type": "module"
 }
