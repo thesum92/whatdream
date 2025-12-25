@@ -2,6 +2,9 @@
   "name": "dream-interpreter",
   "version": "1.0.0",
   "description": "AI Powered Dream Interpreter",
+  "scripts": {
+    "dev": "node local_server.js"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "dotenv": "^16.4.5",
