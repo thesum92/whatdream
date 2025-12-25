@@ -1,4 +1,87 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load Ibn Sirin symbol database
+const ibnSirinData = JSON.parse(
+    readFileSync(join(__dirname, '../data/ibnsereen.json'), 'utf-8')
+);
+
+// Arabic stop words to filter out
+const ARABIC_STOP_WORDS = new Set([
+    'في', 'من', 'على', 'إلى', 'أن', 'هو', 'هي', 'هم', 'هن', 'أنا', 'نحن',
+    'أنت', 'أنتم', 'أنتن', 'الذي', 'التي', 'الذين', 'اللواتي', 'هذا',
+    'هذه', 'ذلك', 'تلك', 'كان', 'كانت', 'يكون', 'ليس', 'ما', 'لا', 'لم',
+    'لن', 'قد', 'كل', 'بعض', 'عند', 'مع', 'بين', 'ثم', 'أو', 'لكن', 'بل',
+    'حتى', 'عن', 'منذ', 'رأيت', 'رأى', 'يرى', 'حلم', 'منام', 'منامي', 'رؤيا'
+]);
+
+/**
+ * Remove Arabic diacritics from text
+ */
+function removeDiacritics(text) {
+    return text.replace(/[\u064B-\u065F\u0670]/g, '');
+}
+
+/**
+ * Extract meaningful Arabic symbols/keywords from dream text
+ */
+function extractSymbols(text) {
+    // Remove diacritics
+    const normalized = removeDiacritics(text);
+
+    // Extract Arabic words (including words with ال prefix)
+    const arabicWords = normalized.match(/[\u0600-\u06FF]+/g) || [];
+
+    // Filter out stop words and short words
+    const symbols = arabicWords
+        .filter(word => word.length > 2)
+        .filter(word => !ARABIC_STOP_WORDS.has(word))
+        .map(word => {
+            // Remove common prefixes (ال, و, ف, ب, ك, ل)
+            return word.replace(/^(ال|[وفبكل])/, '');
+        })
+        .filter(word => word.length > 1);
+
+    // Return unique symbols
+    return [...new Set(symbols)];
+}
+
+/**
+ * Search Ibn Sirin database for relevant interpretations
+ */
+function findRelevantInterpretations(symbols, maxResults = 5) {
+    if (symbols.length === 0) return [];
+
+    const matches = [];
+
+    for (const entry of ibnSirinData) {
+        const normalizedTopic = removeDiacritics(entry.topic);
+
+        // Check if any symbol matches the topic
+        for (const symbol of symbols) {
+            if (normalizedTopic.includes(symbol) || symbol.includes(normalizedTopic)) {
+                matches.push({
+                    topic: entry.topic,
+                    content: entry.content,
+                    relevance: normalizedTopic === symbol ? 2 : 1 // Exact match scores higher
+                });
+                break; // Don't add the same entry multiple times
+            }
+        }
+
+        if (matches.length >= maxResults * 2) break; // Early exit for performance
+    }
+
+    // Sort by relevance and return top results
+    return matches
+        .sort((a, b) => b.relevance - a.relevance)
+        .slice(0, maxResults);
+}
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -263,7 +346,31 @@ Applying Ibn Sirin’s semiotic engine to the 21st century.
         - اختم بعبارة: "والله أعلم".
         `;
 
+        // === RAG: Retrieve relevant Ibn Sirin interpretations ===
+        const extractedSymbols = extractSymbols(dream);
+        const relevantInterpretations = findRelevantInterpretations(extractedSymbols);
+
+        // Build context section if we found matches
+        let contextSection = '';
+        if (relevantInterpretations.length > 0) {
+            if (language === 'ar') {
+                contextSection = `\n\n**مرجع تقليدي من كتب ابن سيرين:**\n`;
+                contextSection += relevantInterpretations
+                    .map(r => `\n**${r.topic}:**\n${r.content}\n`)
+                    .join('\n---\n');
+                contextSection += `\n**ملاحظة:** استخدم هذه المراجع التقليدية كأساس، ثم طبّق المنهجية السيميائية لتوليد تفسير شامل ومعمّق.\n`;
+            } else {
+                contextSection = `\n\n**Traditional Reference Material (Ibn Sirin's Original Interpretations):**\n`;
+                contextSection += relevantInterpretations
+                    .map(r => `\n**${r.topic}:**\n${r.content}\n`)
+                    .join('\n---\n');
+                contextSection += `\n**Note:** Use these traditional references as a foundation, then apply the semiotic methodology to generate a comprehensive, in-depth interpretation.\n`;
+            }
+        }
+
+        // Combine methodology + retrieved context
         let prompt = (language === 'ar') ? arabicMethodology : englishMethodology;
+        prompt = prompt + contextSection;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
