@@ -148,7 +148,7 @@ interpretBtn.addEventListener('click', async () => {
         console.error(error);
         loadingState.style.display = 'none';
         emptyState.style.display = 'block';
-        showToast(translations[currentLang].toastError, 'error');
+        showToast(error.message || translations[currentLang].toastError, 'error');
     } finally {
         interpretBtn.disabled = false;
     }

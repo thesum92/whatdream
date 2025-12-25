@@ -18,8 +18,7 @@ export default async function handler(req, res) {
 
     try {
         const genAI = new GoogleGenerativeAI(apiKey);
-        // Using the model we verified works
-        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const englishMethodology = `
 # The Interpretative Architect: Reverse-Engineering Ibn Sirin’s Methodology
@@ -251,7 +250,7 @@ Applying Ibn Sirin’s semiotic engine to the 21st century.
     * **الطيران (ليلاً):** رحلة غامضة/غير واضحة أو طموح روحي يكتنفه الغموض.
     * **تحكم الهاتف:** الرائي يوجه حياته عبر "الأخبار/المعلومات" أو "العلاقات الاجتماعية".
     * **نفاذ البطارية:** نفاذ "الطاقة" أو "قوة الحياة". فقدان القدرة.
-* **التركيب:** الرائي يحاول صعودًا سريعًا وعالي المخاطر في مسيرته المهنية أو مكانته معتمدًا بشكل كبير على *النفوذ الاجتماعي* أو *المعلومات* (الهاتف) بدلاً من الأسس المتينة. "نفاذ البطارية" ينذر بأن *موارده/طاقته* (أو صبر علاقاته) على وشك النفاذ، مما سيؤدي إلى فقدان السيطرة قبل الوصول إلى الوجهة.
+* **التركيب:** الرائي يحاول صعودًا سريعًا وعالي المخاطر في مسيرته المهنية أو مكانته معتمدًا بشكل كبير على *النفوذ الاجتماعي* أو *المعلومات* (الهاتف) بدلاف من الأسس المتينة. "نفاذ البطارية" ينذر بأن *موارده/طاقته* (أو صبر علاقاته) على وشك النفاذ، مما سيؤدي إلى فقدان السيطرة قبل الوصول إلى الوجهة.
 
         **المهمة:**
         فسر الحلم التالي: "${dream}"
@@ -264,10 +263,7 @@ Applying Ibn Sirin’s semiotic engine to the 21st century.
         - اختم بعبارة: "والله أعلم".
         `;
 
-        let prompt = englishMethodology;
-        if (language === 'ar') {
-            prompt = arabicMethodology;
-        }
+        let prompt = (language === 'ar') ? arabicMethodology : englishMethodology;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
@@ -277,6 +273,9 @@ Applying Ibn Sirin’s semiotic engine to the 21st century.
 
     } catch (error) {
         console.error("Gemini API Error:", error);
-        return res.status(500).json({ error: 'Failed to interpret dream' });
+        return res.status(500).json({
+            error: 'Failed to interpret dream',
+            details: error.message
+        });
     }
 }
